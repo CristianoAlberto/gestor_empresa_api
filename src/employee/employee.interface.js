@@ -1,4 +1,4 @@
-const UserEmployeeInterface = {
+const employeeInterface = {
     id: Number,
     name: String,
     address: String,
@@ -10,4 +10,4 @@ const UserEmployeeInterface = {
     positionId: Number
 }
 
-module.exports = UserEmployeeInterface
+module.exports = employeeInterface

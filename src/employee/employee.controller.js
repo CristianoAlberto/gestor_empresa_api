@@ -1,9 +1,9 @@
-const userEmployeeService = require('./userEmployee.repository')
+const employeeService = require('./employee.repository')
 
-class UserEmployeeController {
+class EmployeeController {
     async getAllUsers(req, res) {
         try {
-            const dataUsers = await userEmployeeService.getAllUsers();
+            const dataUsers = await employeeService.getAllUsers();
             res.status(200).json(dataUsers)
         } catch (error) {
             res.status(500).json({ error: 'Erros ao buscar funcionários.' })
@@ -11,4 +11,4 @@ class UserEmployeeController {
     }
 }
 
-module.exports = new UserEmployeeController()
+module.exports = new EmployeeController()

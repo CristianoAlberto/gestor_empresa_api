@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../../database')
 
-const userEmployee = sequelize.define('UserEmployee', {
+const employeeEntity = sequelize.define('employee', {
     idUserEmployee: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -49,6 +49,6 @@ const userEmployee = sequelize.define('UserEmployee', {
 //     foreignKey: 'departamentId',
 //     allowNull: false,
 //   });
-userEmployee.sync()
+employeeEntity.sync()
 
-module.exports = userEmployee
+module.exports = employeeEntity
