@@ -7,5 +7,4 @@ router.post('./userEmployeeCreate', employeeController.createEmployee)
 router.put('./userEmployeeUpdate/:id', employeeController.updateEmployee)
 router.delete('./userEmployeeDelete/:id', employeeController.deleteEmployee)
 
-
 module.exports = router
