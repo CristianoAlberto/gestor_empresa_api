@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize')
 const sequelize = require('../../database')
 
 const employeeEntity = sequelize.define('employee', {
-    idUserEmployee: {
+    employeeId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -28,27 +28,37 @@ const employeeEntity = sequelize.define('employee', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    office: {
-        type: DataTypes.STRING,
-        allowNull: false
+    position: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: position,
+            key: 'id',
+        },
     },
     departament: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        // references: {
-        //     model: departament,
-        //     key: 'id',
-        // },
+        references: {
+            model: departament,
+            key: 'id',
+        },
     },
 
 
 
 })
 
-// User.belongsTo(Department, {
-//     foreignKey: 'departamentId',
-//     allowNull: false,
-//   });
+employeeEntity.belongsTo(Department, {
+    foreignKey: 'departamentId',
+    allowNull: false,
+});
+
+employeeEntity.belongsTo(Positon, {
+    foreignKey: 'positionId',
+    allowNull: false,
+});
+
 employeeEntity.sync()
 
 module.exports = employeeEntity
