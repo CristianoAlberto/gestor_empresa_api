@@ -27,7 +27,7 @@ class EmployeeRepository {
             if (name.trim() !== '' && adress.trim() !== '' && number !== undefined && !isNaN(number)
                 && number.toString().trim() !== '' && picture.trim() !== '' && departament.trim() !== '') {
 
-                const createdUserEmployee = await employeeEntitiy.create({
+                const createEmployee = await employeeEntitiy.create({
                     name,
                     adress,
                     number,
@@ -36,7 +36,7 @@ class EmployeeRepository {
                     position, departament
                 });
 
-                if (createdUserEmployee) return { message: 'Funcionario criado com sucesso', createdUser }
+                if (createEmployee) return { message: 'Funcionario criado com sucesso', createdUser }
 
             } return { message: 'Todos os campos devem ser preenchidos!!!' }
         } catch (error) {
@@ -63,7 +63,7 @@ class EmployeeRepository {
                 const validate = await employeeEntitiy.findByPk(id)
                 if (validate !== null && validate !== undefined) {
 
-                    const updateUserEmployee = await employeeEntitiy.update({
+                    await validate.update({
                         name,
                         adress,
                         number,
@@ -74,7 +74,7 @@ class EmployeeRepository {
                     })
 
 
-                    if (updateUserEmployee > 0) return { message: 'Funcionário actualizado com sucesso' }
+                    if (updateEmployee > 0) return { message: 'Funcionário actualizado com sucesso' }
                 }
                 return { message: 'Funcionário não existe' }
             } return { message: 'Todos os campos devem ser preenchidos!' }
