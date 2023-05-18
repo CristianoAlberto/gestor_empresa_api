@@ -6,6 +6,7 @@ const positionEntity = sequelize.define('position', {
         type: DataTypes.INTEGER,
         required: true,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false
     },
     name: {

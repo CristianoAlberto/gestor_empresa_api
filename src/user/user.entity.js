@@ -6,7 +6,8 @@ const userEntity = sequelize.define('user', {
         type: DataTypes.INTEGER,
         required: true,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING,
