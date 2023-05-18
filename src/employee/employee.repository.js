@@ -2,7 +2,7 @@ const employeeEntitiy = require('./employee.entity')
 const employeeInterface = require('./employee.interface')
 
 class EmployeeRepository {
-    async getAllEmployee() {
+    async getAllEmployees() {
         try {
             const data = await employeeEntitiy.findAll()
             return data

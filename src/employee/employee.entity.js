@@ -52,9 +52,6 @@ const employeeEntity = sequelize.define('employee', {
 
 })
 
-
-
-
 employeeEntity.belongsTo(Departament, {
     foreignKey: 'departamentId',
     allowNull: false,
