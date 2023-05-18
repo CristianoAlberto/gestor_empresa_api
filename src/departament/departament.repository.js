@@ -1,5 +1,4 @@
 const departamentEntity = require('./departament.entity')
-const departamentInterface = require('./departament.interface')
 
 class DepartamentRepository {
     async getAllDepartament() {
@@ -12,15 +11,6 @@ class DepartamentRepository {
     }
 
     async createDepartament(departamentData) {
-        // const isValidData = Object.entries(departamentInterface).every(([key, expectedType]) => {
-        //     const actualType = typeof departamentData[key]
-        //     return actualType === expectedType.name.toLowerCase()
-        // });
-
-        // if (isValidData.includes(false)) {
-        //     throw new Error('Dados inválidos para criação do usuário');
-        // }
-
         try {
 
             const { name, acronym } = departamentData
@@ -38,15 +28,6 @@ class DepartamentRepository {
     }
 
     async updateDepartament(departamentData) {
-        const isValidData = Object.entries(departamentInterface).every(([key, expectedType]) => {
-            const actualType = typeof departamentData[key]
-            return actualType === expectedType.name.toLowerCase()
-        });
-
-        if (isValidData.includes(false)) {
-            throw new Error('Dados inválidos para criação do usuário');
-        }
-
         try {
             const { id, name, acroynm } = departamentData
             if (id.trim() !== '' && name.trim() !== '' && acroynm.trim() !== '') {

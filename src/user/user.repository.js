@@ -1,5 +1,4 @@
 const userEntity = require('./user.entity')
-const userInterface = require('./user.interface')
 const { hash, compare } = require('bcrypt')
 
 class UserRepository {
@@ -13,15 +12,6 @@ class UserRepository {
     }
 
     async createUser(dataUser) {
-        const isValidData = Object.entries(userInterface).every(([key, expectedType]) => {
-            const actualType = typeof dataUser[key]
-            return actualType === expectedType.name.toLowerCase()
-        });
-
-        if (isValidData.includes(false)) {
-            throw new Error('Dados inválidos para criação do usuário');
-        }
-
         try {
             const { name, email, number, password, picture } = dataUser
             if (name.trim() !== '' && email.trim() !== '' && number !== undefined && !isNaN(number) &&
@@ -50,15 +40,6 @@ class UserRepository {
     }
 
     async updateUser(dataUser) {
-        const isValidData = Object.entries(userInterface).every(([key, expectedType]) => {
-            const actualType = typeof dataUser[key]
-            return actualType === expectedType.name.toLowerCase()
-        });
-
-        if (isValidData.includes(false)) {
-            throw new Error('Dados inválidos para criação do usuário');
-        }
-
         try {
             const { id, name, email, number, password, oldPassword, picture } = dataUser
             if (id !== undefined && !isNaN(id) && id.toString().trim() && name.trim() !== '' &&

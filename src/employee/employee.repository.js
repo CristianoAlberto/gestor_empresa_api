@@ -1,5 +1,4 @@
 const employeeEntitiy = require('./employee.entity')
-const employeeInterface = require('./employee.interface')
 
 class EmployeeRepository {
     async getAllEmployees() {
@@ -12,16 +11,6 @@ class EmployeeRepository {
     }
 
     async createEmployee(employeeData) {
-
-        // // return { employeeInterface }
-        // const isValidData = Object.entries(employeeInterface).every(([key, expectedType]) => {
-        //     const actualType = typeof employeeData[key]
-        //     return actualType === expectedType.name.toLowerCase()
-        // });
-        // return isValidData
-        // if (!isValidData) {
-        //     throw new Error('Dados inválidos para criação do usuário');
-        // }
         try {
             const { name, adress, number, email, picture, positionId, departamentId } = employeeData
 
