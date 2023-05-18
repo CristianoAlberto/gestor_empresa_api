@@ -3,7 +3,7 @@ const sequelize = require('../database')
 
 const userEntity = sequelize.define('user', {
     userId: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         required: true,
         primaryKey: true,
         allowNull: false
@@ -13,15 +13,15 @@ const userEntity = sequelize.define('user', {
         allowNull: false
     },
     email: {
-        type: DateTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     number: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     password: {
-        type: DateTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     picture: {
