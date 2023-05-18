@@ -12,21 +12,23 @@ class DepartamentRepository {
     }
 
     async createDepartament(departamentData) {
-        const isValidData = Object.entries(departamentInterface).every(([key, expectedType]) => {
-            const actualType = typeof departamentData[key]
-            return actualType === expectedType.name.toLowerCase()
-        });
+        // const isValidData = Object.entries(departamentInterface).every(([key, expectedType]) => {
+        //     const actualType = typeof departamentData[key]
+        //     return actualType === expectedType.name.toLowerCase()
+        // });
 
-        if (isValidData.includes(false)) {
-            throw new Error('Dados inválidos para criação do usuário');
-        }
+        // if (isValidData.includes(false)) {
+        //     throw new Error('Dados inválidos para criação do usuário');
+        // }
 
         try {
-            const { name, acroynm } = departamentData
-            if (name.trim() !== '' && acroynm.trim() !== '') {
+
+            const { name, acronym } = departamentData
+
+            if (name.trim() !== '' && acronym.trim() !== '') {
                 const createDepartament = await departamentEntity.create({
                     name,
-                    acroynm
+                    acronym
                 })
                 if (createDepartament) return { message: 'Departamento criado com sucesso', createDepartament }
             } return { message: 'Todos os campos devem ser preenchidos!!!' }

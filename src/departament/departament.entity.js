@@ -4,7 +4,7 @@ const sequelize = require('../database')
 const departamentEntity = sequelize.define('departament', {
     departamentId: {
         type: DataTypes.INTEGER,
-        required: true,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },

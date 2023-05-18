@@ -12,8 +12,8 @@ class PositionController {
 
     async createPosition(req, res) {
         try {
-            const dataPosition = req.body
-            const data = await positionService.createPosition(dataPosition)
+
+            const data = await positionService.createPosition({ ...req.body })
             res.status(201).json(data)
         } catch (error) {
             throw error

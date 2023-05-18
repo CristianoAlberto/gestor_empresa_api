@@ -1,13 +1,12 @@
 const employeeInterface = {
-    id: Number,
-    name: String,
-    address: String,
-    number: Number,
-    email: String,
-    picture: String,
-    office: String,
-    departmentId: Number,
-    positionId: Number
+    name: '',
+    address: '',
+    number: 0,
+    // email: String,
+    // picture: String,
+    // positionId: Number,
+    // departmentId: Number
+
 }
 
 module.exports = employeeInterface

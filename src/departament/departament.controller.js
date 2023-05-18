@@ -12,11 +12,10 @@ class DepartamentController {
 
     async createDepartament(req, res) {
         try {
-            const dataDepartament = req.body
-            const data = await departamentService.createDepartament(dataDepartament)
+            const data = await departamentService.createDepartament({ ...req.body })
             res.status(201).json(data)
         } catch (error) {
-            throw error
+            res.status(500).json({ error: error.message })
         }
     }
 

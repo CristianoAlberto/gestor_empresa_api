@@ -3,8 +3,8 @@ const employeeService = require('./employee.repository')
 class EmployeeController {
     async getAllEmployees(req, res) {
         try {
-            const dataUsers = await employeeService.getAllEmployees();
-            res.status(200).json(dataUsers)
+            const data = await employeeService.getAllEmployees();
+            res.status(200).json(data)
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
@@ -12,8 +12,7 @@ class EmployeeController {
 
     async createEmployee(req, res) {
         try {
-            const dataEmployee = req.body
-            const data = await employeeService.createEmployee(dataEmployee)
+            const data = await employeeService.createEmployee({ ...req.body })
             res.status(201).json(data)
         } catch (error) {
             res.status(500).json({ message: error.message })

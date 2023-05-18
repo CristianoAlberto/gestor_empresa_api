@@ -11,29 +11,32 @@ class EmployeeRepository {
         }
     }
 
-    async createEmployee(userEmployeeData) {
+    async createEmployee(employeeData) {
 
-        const isValidData = Object.entries(employeeInterface).every(([key, expectedType]) => {
-            const actualType = typeof userEmployeeData[key]
-            return actualType === expectedType.name.toLowerCase()
-        });
-
-        if (isValidData.includes(false)) {
-            throw new Error('Dados inválidos para criação do usuário');
-        }
+        // // return { employeeInterface }
+        // const isValidData = Object.entries(employeeInterface).every(([key, expectedType]) => {
+        //     const actualType = typeof employeeData[key]
+        //     return actualType === expectedType.name.toLowerCase()
+        // });
+        // return isValidData
+        // if (!isValidData) {
+        //     throw new Error('Dados inválidos para criação do usuário');
+        // }
         try {
-            const { name, adress, number, email, picture, position, departament } = userEmployeeData
+            const { name, adress, number, email, picture, positionId, departamentId } = employeeData
 
             if (name.trim() !== '' && adress.trim() !== '' && number !== undefined && !isNaN(number)
-                && number.toString().trim() !== '' && picture.trim() !== '' && departament.trim() !== '') {
+                && number.toString().trim() !== '' && picture.trim() !== '') {
 
                 const createEmployee = await employeeEntitiy.create({
+
                     name,
                     adress,
                     number,
                     email,
                     picture,
-                    position, departament
+                    positionId,
+                    departamentId
                 });
 
                 if (createEmployee) return { message: 'Funcionario criado com sucesso', createdUser }
@@ -44,7 +47,7 @@ class EmployeeRepository {
         }
     }
 
-    async updateEmployee(userEmployeeData) {
+    async updateEmployee(employeeData) {
         const isValidData = Object.entries(employeeInterface).every(([key, expectedType]) => {
             const actualType = typeof userEmployeeData[key]
             return actualType === expectedType.name.toLocaleLowerCase()
@@ -55,7 +58,7 @@ class EmployeeRepository {
         }
 
         try {
-            const { id, name, adress, number, email, picture, position, departament } = userEmployeeData
+            const { id, name, adress, number, email, picture, position, departament } = employeeData
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && name.trim() !== ''
                 && adress.trim() !== '' && number !== undefined && !isNaN(number)
                 && number.toString().trim() !== '' && picture.trim() !== '' && departament.trim() !== '') {
@@ -83,9 +86,9 @@ class EmployeeRepository {
         }
     }
 
-    async deleteEmployee(userEmployeeData) {
+    async deleteEmployee(employeeData) {
         try {
-            const { id } = userEmployeeData
+            const { id } = employeeData
             const deleteEmployee = await employeeEntitiy.destroy({ where: id })
             if (deleteEmployee) return { messga: 'Funcionário eliminado com sucesso' }
 
