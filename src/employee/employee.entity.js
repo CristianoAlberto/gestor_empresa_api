@@ -1,5 +1,8 @@
 const { DataTypes } = require('sequelize')
-const sequelize = require('../../database')
+const sequelize = require('../database')
+const Departament = require('../departament/departament.entity')
+const Position = require('../position/position.entity')
+
 
 const employeeEntity = sequelize.define('employee', {
     employeeId: {
@@ -28,20 +31,20 @@ const employeeEntity = sequelize.define('employee', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    position: {
+    positionId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: position,
-            key: 'id',
+            model: Position,
+            key: 'positionId',
         },
     },
-    departament: {
+    departamentId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: departament,
-            key: 'id',
+            model: Departament,
+            key: 'departamentId',
         },
     },
 
@@ -49,12 +52,15 @@ const employeeEntity = sequelize.define('employee', {
 
 })
 
-employeeEntity.belongsTo(Department, {
+
+
+
+employeeEntity.belongsTo(Departament, {
     foreignKey: 'departamentId',
     allowNull: false,
 });
 
-employeeEntity.belongsTo(Positon, {
+employeeEntity.belongsTo(Position, {
     foreignKey: 'positionId',
     allowNull: false,
 });

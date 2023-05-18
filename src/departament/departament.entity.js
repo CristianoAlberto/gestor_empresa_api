@@ -3,7 +3,7 @@ const sequelize = require('../database')
 
 const departamentEntity = sequelize.define('departament', {
     departamentId: {
-        type: DataTypes.String,
+        type: DataTypes.INTEGER,
         required: true,
         primaryKey: true,
         allowNull: false
