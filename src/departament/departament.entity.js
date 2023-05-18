@@ -10,11 +10,11 @@ const departamentEntity = sequelize.define('departament', {
     },
     name: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     acronym: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     }
 })
 

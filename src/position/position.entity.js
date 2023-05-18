@@ -10,19 +10,19 @@ const positionEntity = sequelize.define('position', {
     },
     name: {
         type: DataTypes.STRING,
-        required: true,
+        allowNull: false
     },
     base_salary: {
         type: DataTypes.FLOAT,
-        required: true,
+        allowNull: false
     },
     subsidy: {
         type: DataTypes.FLOAT,
-        required: false
+        allowNull: false
     },
     net_salary: {
         type: DataTypes.FLOAT,
-        required: true
+        allowNull: false
     },
 })
 
