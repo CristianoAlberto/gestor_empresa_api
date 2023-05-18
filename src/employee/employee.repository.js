@@ -37,15 +37,6 @@ class EmployeeRepository {
     }
 
     async updateEmployee(employeeData) {
-        const isValidData = Object.entries(employeeInterface).every(([key, expectedType]) => {
-            const actualType = typeof userEmployeeData[key]
-            return actualType === expectedType.name.toLocaleLowerCase()
-        })
-
-        if (isValidData.includes(false)) {
-            throw new Error('Dados invalidos para a criação do usuário')
-        }
-
         try {
             const { id, name, adress, number, email, picture, position, departament } = employeeData
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && name.trim() !== ''
@@ -78,8 +69,10 @@ class EmployeeRepository {
     async deleteEmployee(employeeData) {
         try {
             const { id } = employeeData
-            const deleteEmployee = await employeeEntitiy.destroy({ where: id })
-            if (deleteEmployee) return { messga: 'Funcionário eliminado com sucesso' }
+            if (id !== undefined && !isNaN(is) && id.toString().trim() !== '') {
+                const deleteEmployee = await employeeEntitiy.destroy({ where: { id } })
+                if (deleteEmployee) return { messga: 'Funcionário eliminado com sucesso' }
+            } return { message: 'O campo é obrigatório!!' }
 
         } catch (error) {
             throw error

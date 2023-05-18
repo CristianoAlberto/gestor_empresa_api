@@ -62,7 +62,7 @@ class PositionRepository {
         try {
             const { id } = positionData
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
-                const deleteDepartament = await positionEntity.destroy({ where: id })
+                const deleteDepartament = await positionEntity.destroy({ where: { id } })
                 if (deleteDepartament) return { message: 'Departamento eliminado com sucesso' }
             } return { message: 'O campo é obrigatório' }
         } catch (error) {

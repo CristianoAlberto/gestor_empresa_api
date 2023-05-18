@@ -73,7 +73,7 @@ class UserRepository {
         try {
             const { id } = dataUser
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
-                const deleteUser = await userEntity.destroy({ where: id })
+                const deleteUser = await userEntity.destroy({ where: { id } })
                 if (deleteUser > 0) return { message: 'Usuário eliminado com ssucesso' }
             } return { message: 'O campo deve ser preenchido!!!' }
         } catch (error) {

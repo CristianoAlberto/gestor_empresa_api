@@ -48,8 +48,10 @@ class DepartamentRepository {
     async deleteDepartament(departamentData) {
         try {
             const { id } = departamentData
-            const deleteDepartament = await departamentEntity.destroy({ where: id })
-            if (deleteDepartament) return { message: 'Departamento eliminado com sucesso' }
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
+                const deleteDepartament = await departamentEntity.destroy({ where: { id } })
+                if (deleteDepartament) return { message: 'Departamento eliminado com sucesso' }
+            } return { message: 'O campo é obrigatário' }
         } catch (error) {
             throw error
         }
