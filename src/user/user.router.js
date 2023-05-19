@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const userController = require('./user.controller')
 const multer = require('../middleware/multer')
+const auth = require('../middleware/auth')
 
-router.get('/userGet', userController.getAllUsers)
-router.post('/userCreate', multer.single('picture'), userController.createUser)
-router.put('/userUpdate/:id', multer.single('picture'), userController.updateUser)
-router.delete('/userDelete/:id', userController.deleteUser)
+router.get('/userGet', auth.authorize, userController.getAllUsers)
+router.post('/userCreate', auth.authorize, multer.single('picture'), userController.createUser)
+router.put('/userUpdate/:id', auth.authorize, multer.single('picture'), userController.updateUser)
+router.delete('/userDelete/:id', auth.authorize, userController.deleteUser)
 
 router.use((err, req, res, next) => {
     if (err.message === 'Tipo de arquivo inválido') {

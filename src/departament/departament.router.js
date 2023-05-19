@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const departamentController = require('./departament.controller')
+const auth = require('../middleware/auth')
 
-router.get('/departamentGet', departamentController.getAllDepartament)
-router.post('/departamentCreate', departamentController.createDepartament)
-router.put('/departamentUpdate/:id', departamentController.updateDepartament)
-router.delete('/departamentDelete/:id', departamentController.deleteDepartament)
+router.get('/departamentGet', auth.authorize, departamentController.getAllDepartament)
+router.post('/departamentCreate', auth.authorize, departamentController.createDepartament)
+router.put('/departamentUpdate/:id', auth.authorize, departamentController.updateDepartament)
+router.delete('/departamentDelete/:id', auth.authorize, departamentController.deleteDepartament)
 
 module.exports = router

@@ -56,15 +56,31 @@ class UserRepository {
                     if (!(await compare(oldPassword, updateUser.password))) return { message: " erro password invalida" }
 
                     const pass = await hash(newPassword, 8)
-                    const filePath = path.join(__dirname, 'public/images', picture.filename);
 
-                    pi
-                    fs.writeFileSync(filePath, picture.Buffer());
+                    let dir = __dirname
+                    const dirfixed = dir.replaceAll('\\', '/')
+                    const dirfixed2 = dirfixed.replace('/user', '')
+                    const filePath = dirfixed2 + '/public/images' + '/1684489246123-0bdd4485293929.5d77aacc43de9.png' //picture.filename
 
-                    // if (fs.existsSync(imagePath))
-                    //     if (!(await fs.unlink(imagePath))) return { message: 'Erro ao eliminar a imagem!' }
 
-                    return picture
+
+                    function deleteFile(filePath, callback) {
+                        fs.unlink(filePath, function (error) {
+                            if (error) {
+                                // return { message: 'Ocorreu um erro ao remover o arquivo:', error };
+                                callback(error);
+                            } else {
+                                // return { message: 'Arquivo removido com sucesso!' }
+                                callback(null);
+                            }
+                        });
+                    }
+
+
+                    if (fs.existsSync(filePath)) {
+                        if (!(await deleteFile(filePath))) return { message: 'Eliminado com sucesso' }
+                        return { message: 'erro' }
+                    }
 
                     await updateUser.update({
                         name,

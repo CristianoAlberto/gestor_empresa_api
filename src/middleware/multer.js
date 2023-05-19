@@ -1,8 +1,11 @@
 const multer = require('multer');
+let path = __dirname
+let pathFixed = path.replace('\\src\\middleware', '\\src\\')
 
 
 
 const storage = multer.diskStorage({
+
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
     }
