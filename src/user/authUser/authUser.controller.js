@@ -14,7 +14,7 @@ class AuthUserController {
     async userLogOut(req, res) {
         try {
             const authUserData = await authUserService.userLogOut()
-            res.status.json(authUserData)
+            res.status(200).json(authUserData)
         } catch (error) {
             res.status(500).json({ error: error.message })
         }

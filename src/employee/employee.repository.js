@@ -1,5 +1,6 @@
 const employeeEntitiy = require('./employee.entity')
-
+const userEntity = require('../user/user.entity')
+const { compare } = require('bcrypt')
 class EmployeeRepository {
     async getAllEmployees() {
         try {
@@ -28,7 +29,7 @@ class EmployeeRepository {
                     departamentId
                 });
 
-                if (createEmployee) return { message: 'Funcionario criado com sucesso', createdUser }
+                if (createEmployee) return { message: 'Funcionario criado com sucesso', createEmployee }
 
             } return { message: 'Todos os campos devem ser preenchidos!!!' }
         } catch (error) {
@@ -38,26 +39,27 @@ class EmployeeRepository {
 
     async updateEmployee(employeeData) {
         try {
-            const { id, name, adress, number, email, picture, position, departament } = employeeData
+            const { id, name, adress, number, email, picture, positionId, departamentId } = employeeData
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && name.trim() !== ''
                 && adress.trim() !== '' && number !== undefined && !isNaN(number)
-                && number.toString().trim() !== '' && picture.trim() !== '' && departament.trim() !== '') {
+                && number.toString().trim() !== '' && picture.trim() !== '' && departamentId !== undefined && !isNaN(departamentId) &&
+                departamentId.toString().trim() !== '' && positionId !== undefined && !isNaN(positionId) && positionId.toString().trim() !== '') {
 
-                const validate = await employeeEntitiy.findByPk(id)
-                if (validate !== null && validate !== undefined) {
+                const updateEmployee = await employeeEntitiy.findByPk(id)
+                if (updateEmployee !== null && updateEmployee !== undefined) {
 
-                    await validate.update({
+                    await updateEmployee.update({
                         name,
                         adress,
                         number,
                         email,
                         picture,
-                        position,
-                        departament
+                        positionId,
+                        departamentId
                     })
 
 
-                    if (updateEmployee > 0) return { message: 'Funcionário actualizado com sucesso' }
+                    if (updateEmployee) return { message: 'Funcionário actualizado com sucesso' }
                 }
                 return { message: 'Funcionário não existe' }
             } return { message: 'Todos os campos devem ser preenchidos!' }
@@ -68,11 +70,14 @@ class EmployeeRepository {
 
     async deleteEmployee(employeeData) {
         try {
-            const { id } = employeeData
-            if (id !== undefined && !isNaN(is) && id.toString().trim() !== '') {
-                const deleteEmployee = await employeeEntitiy.destroy({ where: { id } })
-                if (deleteEmployee) return { messga: 'Funcionário eliminado com sucesso' }
-            } return { message: 'O campo é obrigatório!!' }
+            const { id, userId, password } = employeeData
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && password.trim() !== '' && userId !== undefined && !isNaN(userId) && userId.toString().trim() !== '') {
+                const user = await userEntity.findOne({ where: { userId } })
+                if (!user) return { message: 'Não tens autorização para eliminar!!' }
+                if (!(await compare(password, user.password))) return { message: 'password errada!!' }
+                const deleteEmployee = await employeeEntitiy.destroy({ where: { employeeId: id } })
+                if (deleteEmployee) return { message: 'Funcionário eliminado com sucesso' }
+            } return { message: 'O campo é obrigatório' }
 
         } catch (error) {
             throw error

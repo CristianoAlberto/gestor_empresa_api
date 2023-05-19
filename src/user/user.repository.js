@@ -1,5 +1,7 @@
 const userEntity = require('./user.entity')
 const { hash, compare } = require('bcrypt')
+const fs = require('fs');
+const path = require('path');
 
 class UserRepository {
     async getAllUsers() {
@@ -14,20 +16,21 @@ class UserRepository {
     async createUser(dataUser) {
         try {
             const { name, email, number, password, picture } = dataUser
+
             if (name.trim() !== '' && email.trim() !== '' && number !== undefined && !isNaN(number) &&
-                number.toString().trim() !== '' && password.trim() !== '' && picture.trim() !== '') {
+                number.toString().trim() !== '' && password.trim() !== '' && (picture?.filename?.trim() ?? '')) {
 
                 const validateExist = await userEntity.findOne({ where: { email } })
-
                 if (validateExist) return { message: 'Erro!Não podes criar um usuário com esse email pois ja existe' }
 
-                const pass = hash(8, password)
+                const pass = await hash(password, 8)
+
                 const createUser = await userEntity.create({
                     name,
                     email,
                     number,
                     password: pass,
-                    picture
+                    picture: picture.filename
                 })
 
                 if (createUser) return { message: 'Usuario criado com sucesso', createUser }
@@ -41,25 +44,37 @@ class UserRepository {
 
     async updateUser(dataUser) {
         try {
-            const { id, name, email, number, password, oldPassword, picture } = dataUser
+            const { id, name, email, number, newPassword, oldPassword, picture } = dataUser
             if (id !== undefined && !isNaN(id) && id.toString().trim() && name.trim() !== '' &&
                 email.trim() !== '' && number !== undefined && !isNaN(number) &&
-                number.toString().trim() !== '' && password.trim() !== '' && picture.trim() !== '') {
+                number.toString().trim() !== '' && newPassword.trim() !== '' && newPassword.trim() !== '' && (picture?.filename?.trim() ?? '') !== '') {
 
-                const passOld = hash(8, oldPassword)
-                const pass = hash(8, password)
+
                 const updateUser = await userEntity.findByPk(id)
 
-                if (updateUser !== undefined && updateUser !== null) {
-                    if (!(await compare(passOld, updateUser.password))) return { message: " erro password invalida" }
-                    updateUser.update({
+                if (updateUser !== null) {
+                    if (!(await compare(oldPassword, updateUser.password))) return { message: " erro password invalida" }
+
+                    const pass = await hash(newPassword, 8)
+                    const filePath = path.join(__dirname, 'public/images', picture.filename);
+
+                    pi
+                    fs.writeFileSync(filePath, picture.Buffer());
+
+                    // if (fs.existsSync(imagePath))
+                    //     if (!(await fs.unlink(imagePath))) return { message: 'Erro ao eliminar a imagem!' }
+
+                    return picture
+
+                    await updateUser.update({
                         name,
                         email,
                         number,
-                        pass,
-                        picture
+                        password: pass,
+                        picture: picture.filename
                     })
-                    if (updateUser > 0) return { message: 'Actualizado com sucesso' }
+
+                    if (updateUser) return { message: 'Actualizado com sucesso' }
                 }
                 return { message: 'Usuario não existe' }
 

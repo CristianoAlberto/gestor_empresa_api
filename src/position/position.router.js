@@ -4,7 +4,7 @@ const positionController = require('./position.controller')
 
 router.get('/positionGet', positionController.getAllPositions)
 router.post('/positionCreate', positionController.createPosition)
-router.put('/positionUpdate', positionController.updatePosition)
-router.delete('/positionDelete', positionController.deletePosition)
+router.put('/positionUpdate/:id', positionController.updatePosition)
+router.delete('/positionDelete/:id', positionController.deletePosition)
 
 module.exports = router

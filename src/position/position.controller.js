@@ -16,13 +16,13 @@ class PositionController {
             const data = await positionService.createPosition({ ...req.body })
             res.status(201).json(data)
         } catch (error) {
-            throw error
+            res.status(500).json({ message: error.message })
         }
     }
 
     async updatePosition(req, res) {
         try {
-            const dataPosition = await positionService.updatePosition({ id: req.params, ...req.body })
+            const dataPosition = await positionService.updatePosition({ id: req.params.id, ...req.body })
             res.status(200).json(dataPosition)
         } catch (error) {
             res.status(500).json({ message: error.message })
@@ -31,7 +31,7 @@ class PositionController {
 
     async deletePosition(req, res) {
         try {
-            const dataPosition = await positionService.deletePosition({ id: req.params.id })
+            const dataPosition = await positionService.deletePosition({ id: req.params.id, userId: req.query.id, ...req.body })
             res.status(200).json(dataPosition)
 
         } catch (error) {

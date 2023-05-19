@@ -30,7 +30,7 @@ class DepartamentController {
 
     async deleteDepartament(req, res) {
         try {
-            const dataDepartament = await departamentService.deleteDepartament({ id: req.params.id })
+            const dataDepartament = await departamentService.deleteDepartament({ id: req.params.id, userId: req.query.id, ...req.body })
             res.status(200).json(dataDepartament)
 
         } catch (error) {

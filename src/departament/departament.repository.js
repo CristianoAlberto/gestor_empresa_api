@@ -1,4 +1,6 @@
 const departamentEntity = require('./departament.entity')
+const userEntity = require('../user/user.entity')
+const { compare } = require('bcrypt')
 
 class DepartamentRepository {
     async getAllDepartament() {
@@ -47,11 +49,15 @@ class DepartamentRepository {
 
     async deleteDepartament(departamentData) {
         try {
-            const { id } = departamentData
-            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
-                const deleteDepartament = await departamentEntity.destroy({ where: { id } })
+
+            const { id, userId, password } = departamentData
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && password.trim() !== '' && userId !== undefined && !isNaN(userId) && userId.toString().trim() !== '') {
+                const user = await userEntity.findOne({ where: { userId } })
+                if (!user) return { message: 'Não tens autorização para eliminar!!' }
+                if (!(await compare(password, user.password))) return { message: 'password errada!!' }
+                const deleteDepartament = await departamentEntity.destroy({ where: { departamentId: id } })
                 if (deleteDepartament) return { message: 'Departamento eliminado com sucesso' }
-            } return { message: 'O campo é obrigatário' }
+            } return { message: 'O campo é obrigatório' }
         } catch (error) {
             throw error
         }

@@ -1,4 +1,6 @@
 const positionEntity = require('./position.entity')
+const userEntity = require('../user/user.entity')
+const { compare } = require('bcrypt')
 
 class PositionRepository {
     async getAllPosition() {
@@ -26,7 +28,7 @@ class PositionRepository {
                     net_salary
                 })
 
-                if (createPosition) return { message: 'Departamento criado com sucesso', createDepartament }
+                if (createPosition) return { message: 'Cargo criado com sucesso', createPosition }
             } return { message: 'Todos os campos devem ser preenchidos!!!' }
         } catch (error) {
             throw error
@@ -37,7 +39,7 @@ class PositionRepository {
         try {
             const { id, name, base_salary, subsidy, net_salary } = positionData
 
-            if (id.trim() !== '' && name.trim() !== '' && base_salary !== undefined && !isNaN(base_salary) &&
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && name.trim() !== '' && base_salary !== undefined && !isNaN(base_salary) &&
                 base_salary.toString().trim() !== '' && subsidy !== undefined && !isNaN(subsidy) &&
                 subsidy.toString().trim() !== '' && net_salary !== undefined && !isNaN(net_salary) &&
                 net_salary.toString().trim() !== '') {
@@ -58,12 +60,15 @@ class PositionRepository {
         }
     }
 
-    async deleteDepartament(positionData) {
+    async deletePosition(positionData) {
         try {
-            const { id } = positionData
-            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
-                const deleteDepartament = await positionEntity.destroy({ where: { id } })
-                if (deleteDepartament) return { message: 'Departamento eliminado com sucesso' }
+            const { id, userId, password } = positionData
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && password.trim() !== '' && userId !== undefined && !isNaN(userId) && userId.toString().trim() !== '') {
+                const user = await userEntity.findOne({ where: { userId } })
+                if (!user) return { message: 'Não tens autorização para eliminar!!' }
+                if (!(await compare(password, user.password))) return { message: 'password errada!!' }
+                const deletePosition = await positionEntity.destroy({ where: { positionId: id } })
+                if (deletePosition) return { message: 'Cargo eliminado com sucesso' }
             } return { message: 'O campo é obrigatório' }
         } catch (error) {
             throw error
