@@ -12,7 +12,7 @@ class EmployeeController {
 
     async createEmployee(req, res) {
         try {
-            const data = await employeeService.createEmployee({ ...req.body })
+            const data = await employeeService.createEmployee({ ...req.body, picture: req.file })
             res.status(201).json(data)
         } catch (error) {
             res.status(500).json({ message: error.message })
@@ -21,7 +21,7 @@ class EmployeeController {
 
     async updateEmployee(req, res) {
         try {
-            const data = await employeeService.updateEmployee({ id: req.params.id, ...req.body })
+            const data = await employeeService.updateEmployee({ id: req.params.id, ...req.body, picture: req.file })
             res.status(200).json(data)
         } catch (error) {
             res.status(500).json({ message: error.message })

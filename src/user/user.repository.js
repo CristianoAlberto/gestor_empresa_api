@@ -1,7 +1,7 @@
 const userEntity = require('./user.entity')
 const { hash, compare } = require('bcrypt')
 const fs = require('fs');
-const path = require('path');
+
 
 class UserRepository {
     async getAllUsers() {
@@ -33,8 +33,20 @@ class UserRepository {
                     picture: picture.filename
                 })
 
-                if (createUser) return { message: 'Usuario criado com sucesso', createUser }
+                if (createUser) {
+                    let dir = __dirname
+                    const dirfixed = dir.replaceAll('\\', '/')
+                    const dirfixed2 = dirfixed.replace('/user', '')
+                    const imagemBinaria = fs.readFileSync(`${picture.path}`);
 
+                    await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                        if (err) {
+                            console.error('Ocorreu um erro ao salvar a imagem:', err);
+                            return;
+                        }
+                    });
+                    return { message: 'Usuario criado com sucesso', createUser }
+                }
             } return { message: 'Todos os campos devem ser preenchidos!!!' }
 
         } catch (error) {
@@ -60,26 +72,23 @@ class UserRepository {
                     let dir = __dirname
                     const dirfixed = dir.replaceAll('\\', '/')
                     const dirfixed2 = dirfixed.replace('/user', '')
-                    const filePath = dirfixed2 + '/public/images' + '/1684489246123-0bdd4485293929.5d77aacc43de9.png' //picture.filename
+                    const filePath = dirfixed2 + '/public/images' + '/' + updateUser.picture
 
-
-
-                    function deleteFile(filePath, callback) {
+                    function deleteFile(filePath) {
                         fs.unlink(filePath, function (error) {
                             if (error) {
-                                // return { message: 'Ocorreu um erro ao remover o arquivo:', error };
-                                callback(error);
+                                return { message: 'Ocorreu um erro ao remover o arquivo:', error };
                             } else {
-                                // return { message: 'Arquivo removido com sucesso!' }
-                                callback(null);
+                                return { message: 'Arquivo removido com sucesso!' }
                             }
                         });
                     }
 
-
+                    let t = false
                     if (fs.existsSync(filePath)) {
-                        if (!(await deleteFile(filePath))) return { message: 'Eliminado com sucesso' }
-                        return { message: 'erro' }
+                        if (!(await deleteFile(filePath))) {
+                            t = true
+                        }
                     }
 
                     await updateUser.update({
@@ -90,9 +99,21 @@ class UserRepository {
                         picture: picture.filename
                     })
 
-                    if (updateUser) return { message: 'Actualizado com sucesso' }
-                }
-                return { message: 'Usuario não existe' }
+                    if (updateUser) {
+                        if (t == true) {
+                            const imagemBinaria = fs.readFileSync(`${picture.path}`);
+
+                            await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                                if (err) {
+                                    console.error('Ocorreu um erro ao salvar a imagem:', err);
+                                    return;
+                                }
+                            });
+                            return { message: 'Actualizado com sucesso' }
+                        } return { message: 'erro ao apagar a imagem' }
+                    }
+
+                } return { message: 'Usuario não existe' }
 
             } return { message: 'Todos os campos devem ser preenchidos!!!' }
         } catch (error) {
