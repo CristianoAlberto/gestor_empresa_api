@@ -12,6 +12,20 @@ class DepartamentRepository {
         }
     }
 
+    async getDepartamentById(departamentData) {
+        try {
+            const { id } = departamentData
+            if (id !== undefined && !isNaN(id) && id.toString().trim !== '') {
+                const data = await departamentEntity.findByPk(id)
+                if (data) return data
+                return
+            } return { message: 'O campo deve ser preenchidos!!!' }
+        } catch (error) {
+            throw error
+        }
+    }
+
+
     async createDepartament(departamentData) {
         try {
 

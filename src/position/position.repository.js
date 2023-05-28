@@ -12,6 +12,19 @@ class PositionRepository {
         }
     }
 
+    async getPositionById(positionData) {
+        try {
+            const { id } = positionData
+            if (id !== undefined && !isNaN(id) && id.toString().trim !== '') {
+                const data = await positionEntity.findByPk(id)
+                if (data) return data
+                return
+            } return { message: 'O campo deve ser preenchidos!!!' }
+        } catch (error) {
+            throw error
+        }
+    }
+
     async createPosition(positionData) {
         try {
             const { name, base_salary, subsidy, net_salary } = positionData

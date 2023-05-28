@@ -1,6 +1,7 @@
 const userEntity = require('./user.entity')
 const { hash, compare } = require('bcrypt')
 const fs = require('fs');
+const path = require('path')
 
 
 class UserRepository {
@@ -8,6 +9,20 @@ class UserRepository {
         try {
             const dataUser = await userEntity.findAll()
             if (dataUser) return dataUser
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getUserById(dataUser) {
+        try {
+            const { id } = dataUser
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
+                const dataUser = await userEntity.findByPk(id)
+                if (dataUser) return dataUser
+                return
+            } return { message: 'Todos os campos devem ser preenchidos!!!' }
+
         } catch (error) {
             throw error
         }
@@ -35,11 +50,10 @@ class UserRepository {
 
                 if (createUser) {
                     let dir = __dirname
-                    const dirfixed = dir.replaceAll('\\', '/')
-                    const dirfixed2 = dirfixed.replace('/user', '')
+                    const dir2 = dir.replaceAll('\\', '/').replace('gestao_de_empresa_api/src/user', 'gestaoempresafront/public/images/usersImages')
                     const imagemBinaria = fs.readFileSync(`${picture.path}`);
 
-                    await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                    await fs.writeFile(dir2 + `/${picture.filename}`, imagemBinaria, (err) => {
                         if (err) {
                             console.error('Ocorreu um erro ao salvar a imagem:', err);
                             return;
@@ -70,9 +84,8 @@ class UserRepository {
                     const pass = await hash(newPassword, 8)
 
                     let dir = __dirname
-                    const dirfixed = dir.replaceAll('\\', '/')
-                    const dirfixed2 = dirfixed.replace('/user', '')
-                    const filePath = dirfixed2 + '/public/images' + '/' + updateUser.picture
+                    const dir2 = dir.replaceAll('\\', '/').replace('gestao_de_empresa_api/src/user', 'gestaoempresafront/public/images/usersImages')
+                    const filePath = dir2 + `/${updateUser.picture}`
 
                     function deleteFile(filePath) {
                         fs.unlink(filePath, function (error) {
@@ -83,14 +96,12 @@ class UserRepository {
                             }
                         });
                     }
-
                     let t = false
                     if (fs.existsSync(filePath)) {
                         if (!(await deleteFile(filePath))) {
                             t = true
                         }
                     }
-
                     await updateUser.update({
                         name,
                         email,
@@ -103,7 +114,7 @@ class UserRepository {
                         if (t == true) {
                             const imagemBinaria = fs.readFileSync(`${picture.path}`);
 
-                            await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                            await fs.writeFile(dir2 + `/${picture.filename}`, imagemBinaria, (err) => {
                                 if (err) {
                                     console.error('Ocorreu um erro ao salvar a imagem:', err);
                                     return;
@@ -125,8 +136,9 @@ class UserRepository {
         try {
             const { id } = dataUser
             if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
-                const deleteUser = await userEntity.destroy({ where: { id } })
+                const deleteUser = await userEntity.destroy({ where: { userId: id } })
                 if (deleteUser > 0) return { message: 'Usuário eliminado com ssucesso' }
+                return
             } return { message: 'O campo deve ser preenchido!!!' }
         } catch (error) {
             throw error

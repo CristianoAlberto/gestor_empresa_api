@@ -5,6 +5,7 @@ const multer = require('../middleware/multer')
 const auth = require('../middleware/auth')
 
 router.get('/userGet', auth.authorize, userController.getAllUsers)
+router.get('/userGetId/:id', auth.authorize, userController.getUserById)
 router.post('/userCreate', auth.authorize, multer.single('picture'), userController.createUser)
 router.put('/userUpdate/:id', auth.authorize, multer.single('picture'), userController.updateUser)
 router.delete('/userDelete/:id', auth.authorize, userController.deleteUser)

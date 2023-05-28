@@ -6,13 +6,21 @@ class PositionController {
             const data = await positionService.getAllPosition()
             res.status(200).json(data)
         } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    async getPositionById(req, res) {
+        try {
+            const data = await positionService.getPositionById({ id: req.params.id })
             res.status(200).json(data)
+        } catch (error) {
+            res.status(500).json({ message: error.message })
         }
     }
 
     async createPosition(req, res) {
         try {
-
             const data = await positionService.createPosition({ ...req.body })
             res.status(201).json(data)
         } catch (error) {

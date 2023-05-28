@@ -13,6 +13,19 @@ class EmployeeRepository {
         }
     }
 
+    async getEmployeeById(employeeData) {
+        try {
+            const { id } = employeeData
+            if (id !== undefined && !isNaN(id) && id.toString().trim !== '') {
+                const data = await employeeEntitiy.findByPk(id)
+                if (data) return data
+                return
+            } return { message: 'O campo deve ser preenchidos!!!' }
+        } catch (error) {
+            throw error
+        }
+    }
+
     async createEmployee(employeeData) {
         try {
 
@@ -40,11 +53,10 @@ class EmployeeRepository {
                 if (createEmployee) {
 
                     let dir = __dirname
-                    const dirfixed = dir.replaceAll('\\', '/')
-                    const dirfixed2 = dirfixed.replace('/employee', '')
+                    const dir2 = dir.replaceAll('\\', '/').replace('gestao_de_empresa_api/src/employee', 'gestaoempresafront/public/images/employeesImages')
                     const imagemBinaria = fs.readFileSync(`${picture.path}`);
 
-                    await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                    await fs.writeFile(dir2 + `/${picture.filename}`, imagemBinaria, (err) => {
                         if (err) {
                             console.error('Ocorreu um erro ao salvar a imagem:', err);
                             return;
@@ -71,9 +83,8 @@ class EmployeeRepository {
                 if (updateEmployee !== null && updateEmployee !== undefined) {
 
                     let dir = __dirname
-                    const dirfixed = dir.replaceAll('\\', '/')
-                    const dirfixed2 = dirfixed.replace('/employee', '')
-                    const filePath = dirfixed2 + '/public/images' + '/' + updateEmployee.picture
+                    const dir2 = dir.replaceAll('\\', '/').replace('gestao_de_empresa_api/src/employee', 'gestaoempresafront/public/images/employeesImages')
+                    const filePath = dir2 + `/${updateEmployee.picture}`
 
                     function deleteFile(filePath) {
                         fs.unlink(filePath, function (error) {
@@ -104,7 +115,7 @@ class EmployeeRepository {
                     if (updateEmployee) {
                         if (t == true) {
                             const imagemBinaria = await fs.readFileSync(`${picture.path}`);
-                            await fs.writeFile(dirfixed2 + `/public/images/${picture.filename}`, imagemBinaria, (err) => {
+                            await fs.writeFile(dir2 + `/${picture.filename}`, imagemBinaria, (err) => {
                                 if (err) {
                                     console.error('Ocorreu um erro ao salvar a imagem:', err);
                                     return;

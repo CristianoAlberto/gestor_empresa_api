@@ -10,6 +10,15 @@ class EmployeeController {
         }
     }
 
+    async getEmployeeById(req, res) {
+        try {
+            const data = await employeeService.getEmployeeById({ id: req.params.id })
+            res.status(200).json(data)
+        } catch (error) {
+            res.status(500).json({ message: erro.message })
+        }
+    }
+
     async createEmployee(req, res) {
         try {
             const data = await employeeService.createEmployee({ ...req.body, picture: req.file })

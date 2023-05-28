@@ -11,6 +11,15 @@ class UserController {
         }
     }
 
+    async getUserById(req, res) {
+        try {
+            const dataUser = await userService.getUserById({ id: req.params.id })
+            res.status(200).json(dataUser)
+        } catch {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
     async createUser(req, res) {
         try {
             const dataUser = await userService.createUser({ ...req.body, picture: req.file })

@@ -6,7 +6,16 @@ class DepartamentController {
             const data = await departamentService.getAllDepartament()
             res.status(200).json(data)
         } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    async getDepartamentById(req, res) {
+        try {
+            const data = await departamentService.getDepartamentById({ id: req.params.id })
             res.status(200).json(data)
+        } catch (error) {
+            res.status(500).json({ message: error.message })
         }
     }
 
