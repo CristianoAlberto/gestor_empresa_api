@@ -45,13 +45,13 @@ class DepartamentRepository {
 
     async updateDepartament(departamentData) {
         try {
-            const { id, name, acroynm } = departamentData
-            if (id.trim() !== '' && name.trim() !== '' && acroynm.trim() !== '') {
+            const { id, name, acronym} = departamentData
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && name.trim() !== '' && acronym.trim() !== '') {
                 const validate = await departamentEntity.findByPk(id)
                 if (validate != null && validate != undefined) {
                     validate.update({
                         name,
-                        acroynm
+                         acronym
                     })
                 }
                 return { message: 'Actualizado com sucesso' }

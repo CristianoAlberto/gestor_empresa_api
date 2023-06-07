@@ -134,12 +134,35 @@ class UserRepository {
 
     async deleteUser(dataUser) {
         try {
-            const { id } = dataUser
-            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '') {
+            const { id, userId, password } = dataUser
+            if (id !== undefined && !isNaN(id) && id.toString().trim() !== '' && password.trim() !== '') {
+                const user = await userEntity.findOne({ where: { userId } })
+                if (!user) return { message: 'Não tens autorização para eliminar!!' }
+                if (!(await compare(password, user.password))) return { message: 'password errada!!' }
                 const deleteUser = await userEntity.destroy({ where: { userId: id } })
-                if (deleteUser > 0) return { message: 'Usuário eliminado com ssucesso' }
-                return
-            } return { message: 'O campo deve ser preenchido!!!' }
+                if (deleteUser) {
+                    let dir = __dirname
+                    const dir2 = dir.replaceAll('\\', '/').replace('gestao_de_empresa_api/src/user', 'gestaoempresafront/public/images/usersImages')
+                    const filePath = dir2 + `/${deleteUser.picture}`
+
+                    function deleteFile(filePath) {
+                        fs.unlink(filePath, function (error) {
+                            if (error) {
+                                return { message: 'Ocorreu um erro ao remover o arquivo:', error };
+                            } else {
+                                return { message: 'Arquivo removido com sucesso!' }
+                            }
+                        });
+                    }
+                    let t = false
+                    if (fs.existsSync(filePath)) {
+                        if (!(await deleteFile(filePath))) {
+                            t = true
+                        }
+                    }
+                    return { message: 'Usuário eliminado com sucesso', t }
+                }
+            } return { message: 'O campo é obrigatório' }
         } catch (error) {
             throw error
         }

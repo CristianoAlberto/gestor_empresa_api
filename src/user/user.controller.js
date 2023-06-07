@@ -40,7 +40,7 @@ class UserController {
 
     async deleteUser(req, res) {
         try {
-            const dataUser = await userService.deleteUser({ id: req.params.id })
+            const dataUser = await userService.deleteUser({ id: req.params.id, ...req.query})
             res.status(200).json(dataUser)
         } catch (error) {
             res.status(500).json({ error: error.message })

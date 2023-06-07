@@ -39,7 +39,7 @@ class PositionController {
 
     async deletePosition(req, res) {
         try {
-            const dataPosition = await positionService.deletePosition({ id: req.params.id, userId: req.query.id, ...req.body })
+            const dataPosition = await positionService.deletePosition({ id: req.params.id, ...req.query})
             res.status(200).json(dataPosition)
 
         } catch (error) {

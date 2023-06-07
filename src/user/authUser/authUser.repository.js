@@ -14,7 +14,7 @@ class AuthUserRepository {
                     if (!(await compare(password, validateExist.password))) return { message: 'Email ou senha não esta correta' }
                     const token = await authUser.generateToken(validateExist.userId)
                     const decodedToken = await authUser.decodeToken(token)
-                    return { usuario: { id: decodedToken.id, nome: validateExist.name, email: validateExist.email }, token: { token }, }
+                    return { usuario: { id: decodedToken.id, nome: validateExist.name, email: validateExist.email, picture: validateExist.picture }, token: { token }, }
                 } return { message: 'Email ou senha não esta correta' }
             } return { message: 'Todos os campos devem ser preenchidos!!' }
         } catch (error) {
